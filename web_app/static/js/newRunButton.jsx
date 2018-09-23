@@ -4,7 +4,7 @@ class NewRunButton extends Component  {
 	render() {
 		return(
 			<button id="newRunButton"
-				onMouseDown={this.props.handleMouseDown}></button>
+				onMouseDown={this.props.handleMouseDown}>New Check</button>
 		);
 	}
 }

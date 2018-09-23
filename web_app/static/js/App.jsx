@@ -1,4 +1,7 @@
 import React from "react";
+//import styles
+import "../css/App.css";
+//import components
 import NewRunMenu from "./newRunMenu";
 import NewRunButton from "./newRunButton";
 export default class App extends React.Component {
@@ -13,6 +16,27 @@ export default class App extends React.Component {
 		this.toggleMenu = this.toggleMenu.bind(this);
 	}
 
+	//Display
+	render(){
+		return(
+			<div>
+				<div id="header">
+					<NewRunButton handleMouseDown={this.handleMenuClick}></NewRunButton>
+				</div>
+				<div id="dataDisplay">
+					<NewRunMenu handleMouseDown={this.handleMenuClick} 
+						menuVisibility={this.state.menuVisible}/>
+					<ul>
+						<li>physics</li>
+						<li>is</li>
+						<li>hard</li>
+					</ul>
+				</div>
+			</div>
+		);
+	}
+
+	//State Management
 	handleMenuClick(e){
 		this.toggleMenu();
 
@@ -28,19 +52,5 @@ export default class App extends React.Component {
 		);
 	}
 
-	render(){
-		return(
-			<div>
-				<h1>This is the start of the CDMS Lab's new interface with its detectors!</h1>
-				<h2>Click the tiny button below to see what the potential menu for starting the detectors would look like</h2>
-				<NewRunButton handleMouseDown={this.handleMenuClick}></NewRunButton>
-				<NewRunMenu handleMouseDown={this.handleMenuClick} menuVisibility={this.state.menuVisible}/>
-				<ul>
-					<li>physics</li>
-					<li>is</li>
-					<li>hard</li>
-				</ul>
-			</div>
-		);
-	}
+
 }

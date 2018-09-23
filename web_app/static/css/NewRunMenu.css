@@ -1,5 +1,5 @@
 #flyoutMenu {
-  width: 50vw;
+  width: 40vw;
   height: 100vh;
   background-color: #002B36;
   color: #FDF6E3;
@@ -13,10 +13,26 @@
 }
  
 #flyoutMenu.hide {
-  transform: translate3d(50vw, 0, 0);
+  transform: translate3d(40vw, 0, 0);
 }
  
 #flyoutMenu.show {
   transform: translate3d(0vw, 0, 0);
   overflow: hidden;
+}
+
+#exitMenu{
+	position: fixed;
+	bottom: 0;
+	background-color: #000000;
+	height: 5vh;
+	width: 50vw;
+}
+
+button.start {
+	left: 0;
+}
+
+button.cancel {
+	right: 0;
 }
