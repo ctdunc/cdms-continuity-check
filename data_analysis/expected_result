@@ -1,4 +1,4 @@
-      Signal_1            Signal_2      Expected Continuity         min                 max         
+      Signal_1            Signal_2      Expected_Continuity         min                 max
         SQ_6             TES_BIAS_7         Disconnected        4.000000E+07        1.000000E+38    
         SQ_6              SQ_RTN_7          Disconnected        4.000000E+07        1.000000E+38    
         SQ_6               SQF_6            Disconnected        4.000000E+07        1.000000E+38    
