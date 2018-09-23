@@ -31,7 +31,8 @@ export default class App extends React.Component {
 	render(){
 		return(
 			<div>
-				<p> this is just some meme'd placeholder content</p>
+				<h1>This is the start of the CDMS Lab's new interface with its detectors!</h1>
+				<h2>Click the tiny button below to see what the potential menu for starting the detectors would look like</h2>
 				<NewRunButton handleMouseDown={this.handleMenuClick}></NewRunButton>
 				<NewRunMenu handleMouseDown={this.handleMenuClick} menuVisibility={this.state.menuVisible}/>
 				<ul>
