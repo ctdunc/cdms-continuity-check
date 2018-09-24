@@ -11,9 +11,8 @@ export default class App extends React.Component {
 
 		this.state = {
 			menuVisible: false
-			data: 
 		};
-
+		this.getSampleData = this.getSampleData.bind(this);
 		this.handleMenuClick = this.handleMenuClick.bind(this);
 		this.toggleMenu = this.toggleMenu.bind(this);
 	}
@@ -33,7 +32,9 @@ export default class App extends React.Component {
 			</div>
 		);
 	}
-
+	getSampleData(){
+	
+	}
 	//State Management
 	handleMenuClick(e){
 		this.toggleMenu();
