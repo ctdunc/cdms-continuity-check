@@ -4,6 +4,7 @@ import "../css/App.css";
 //import components
 import NewRunMenu from "./newRunMenu";
 import NewRunButton from "./newRunButton";
+import DataDisplay from "./dataDisplay";
 export default class App extends React.Component {
 	constructor(props,context){
 		super(props,context);
@@ -26,12 +27,8 @@ export default class App extends React.Component {
 				<div id="dataDisplay">
 					<NewRunMenu handleMouseDown={this.handleMenuClick} 
 						menuVisibility={this.state.menuVisible}/>
-					<ul>
-						<li>physics</li>
-						<li>is</li>
-						<li>hard</li>
-					</ul>
 				</div>
+				<DataDisplay/>
 			</div>
 		);
 	}
