@@ -11,6 +11,7 @@ export default class App extends React.Component {
 
 		this.state = {
 			menuVisible: false
+			data: 
 		};
 
 		this.handleMenuClick = this.handleMenuClick.bind(this);
