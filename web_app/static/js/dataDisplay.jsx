@@ -13,8 +13,14 @@ class DataDisplay extends Component{
 		return(
 			<div>
 				<ReactTable data={this.state.data} 
+					getTheadProps={() => {
+							return {
+								style: {
+									background: "red",
+								}
+							}}}	
 					columns={[
-						{
+					{
 						Header: "Signal",
 						columns: [
 							{

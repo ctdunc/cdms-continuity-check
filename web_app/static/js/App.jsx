@@ -20,15 +20,17 @@ export default class App extends React.Component {
 	//Display
 	render(){
 		return(
-			<div>
+			<div id="top">
 				<div id="header">
-					<NewRunButton handleMouseDown={this.handleMenuClick}></NewRunButton>
+					<NewRunButton handleMouseDown={this.handleMenuClick}/>
 				</div>
-				<div id="dataDisplay">
+				<div>
 					<NewRunMenu handleMouseDown={this.handleMenuClick} 
 						menuVisibility={this.state.menuVisible}/>
 				</div>
-				<DataDisplay/>
+				<div id="content">
+					<DataDisplay/>
+				</div>
 			</div>
 		);
 	}
