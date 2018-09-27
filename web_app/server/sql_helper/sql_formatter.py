@@ -19,7 +19,8 @@ def format_log_row(log_table_name,
             Wiring,
             Device,
             Temperature,
-            Validation_table)
+            Validator,
+            Date)
         VALUES (
             "{cname}",
             "{inst}",
@@ -27,17 +28,20 @@ def format_log_row(log_table_name,
             "{wire}",
             "{dev}",
             "{temperature}",
-            "{validator}"
+            "{validator}",
+            "{timestamp}"
         );
     """
     log_formatted = log_format.format(
             log=log_table_name,
+            cname=check_table_name,
             inst=institution,
             vi_b=vib,
             wire=wiring,
             dev=device,
             temperature=temp,
-            validator=validation_table)
+            validator=validation_table,
+            timestamp=str(datetime.datetime.now().time()))
     return log_formatted
 
 def format_check_table():
@@ -51,17 +55,21 @@ def format_check_table():
         Minimum FLOAT,
         Maximum FLOAT,
         Measured FLOAT,
-        Unit VARCHAR(20),
+        Unit VARCHAR(50),
         Pass BIT);
         """
     return [creation_format.format(tname=table_name),table_name]
 
 def format_check_row(table, sig_1, sig_2, minimum, maximum, measured,unit,passed):
+    if passed:
+        passed = 1
+    else:
+        passed = 0
     insertion_format =""" 
         INSERT INTO
         {tabl} (
-            Signal 1,
-            Signal 2,
+            Signal_1,
+            Signal_2,
             Minimum,
             Maximum,
             Measured,
@@ -85,4 +93,4 @@ def format_check_row(table, sig_1, sig_2, minimum, maximum, measured,unit,passed
             max=maximum,
             measure=measured,
             unitt=unit,
-            passing=passed
+            passing=passed)
