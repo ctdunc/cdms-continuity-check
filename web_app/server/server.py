@@ -18,7 +18,7 @@ def getData():
     try:
         conn=mysql.connect()
         cursor=conn.cursor()
-        cursor.execute('SELECT * FROM continuity_prediction')
+        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator FROM RunHistory')
         data = cursor.fetchall()
         return jsonify(data)
     except Exception as e:
@@ -26,6 +26,22 @@ def getData():
     finally:
         cursor.close()
         conn.close()
+
+@app.route("/runHistory", methods=['GET'])
+def getRuns():
+    try:
+        conn=mysql.connect()
+        cursor=conn.cursor()
+        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator FROM RunHistory')
+        data = cursor.fetchall()
+        return jsonify(data)
+    except Exception as e:
+        return str(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+
 if __name__ == "__main__":
     app.run()
 

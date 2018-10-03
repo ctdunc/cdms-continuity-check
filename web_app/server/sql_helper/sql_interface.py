@@ -53,7 +53,7 @@ def write_check(data,
             wiring,
             device,
             temp,
-            validation_table) 
+            validation_table)
     cursor.execute(log_table)
     # When SQL returns an error (i.e. the table name is already taken), 
     # the program generates a new name, and tries again
@@ -68,4 +68,5 @@ def write_check(data,
     conn.close()
     return "Sucess! Data written to: "+table_name
 
+write_check(gen_new_check(),"BERK","VIB","WRIE","DEV","TEMP","TABL")
 

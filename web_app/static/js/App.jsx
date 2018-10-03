@@ -4,7 +4,7 @@ import "../css/App.css";
 //import components
 import NewRunMenu from "./newRunMenu";
 import NewRunButton from "./newRunButton";
-import DataDisplay from "./dataDisplay";
+import RunDisplay from "./RunDisplay";
 export default class App extends React.Component {
 	constructor(props,context){
 		super(props,context);
@@ -29,7 +29,7 @@ export default class App extends React.Component {
 						menuVisibility={this.state.menuVisible}/>
 				</div>
 				<div id="content">
-					<DataDisplay/>
+					<RunDisplay/>
 				</div>
 			</div>
 		);
