@@ -42,9 +42,9 @@ class RunDisplay extends Component{
 						},
 						{
 							Header:"Validator",
-							accessor:'7'
+							accessor:'6'
 						}
-					]}
+				]}
 					style={{
 						height:"70vh"
 					}}

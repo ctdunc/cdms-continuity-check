@@ -18,7 +18,7 @@ def getData():
     try:
         conn=mysql.connect()
         cursor=conn.cursor()
-        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator FROM RunHistory')
+        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, FROM RunHistory')
         data = cursor.fetchall()
         return jsonify(data)
     except Exception as e:

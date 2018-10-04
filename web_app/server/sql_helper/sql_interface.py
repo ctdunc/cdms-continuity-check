@@ -68,5 +68,5 @@ def write_check(data,
     conn.close()
     return "Sucess! Data written to: "+table_name
 
-write_check(gen_new_check(),"BERK","VIB","WRIE","DEV","TEMP","TABL")
+write_check(gen_new_check(),"BERK","VIB","WRIE","DEV",298 ,"TABL")
 
