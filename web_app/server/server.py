@@ -32,7 +32,7 @@ def getRuns():
     try:
         conn=mysql.connect()
         cursor=conn.cursor()
-        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator FROM RunHistory')
+        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM RunHistory')
         data = cursor.fetchall()
         return jsonify(data)
     except Exception as e:

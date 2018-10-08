@@ -40,7 +40,7 @@ def write_check(data,
         
     # Create New Table
     create_table,table_name = format_check_table()
-    cursor.execute(exist_check.format(name=table_name))
+    print(cursor.execute(exist_check.format(name=table_name)))
     exists = cursor.fetchone()
     cursor.execute(create_table)
     
@@ -67,6 +67,5 @@ def write_check(data,
     conn.commit()
     conn.close()
     return "Sucess! Data written to: "+table_name
-
-write_check(gen_new_check(),"BERK","VIB","WRIE","DEV",298 ,"TABL")
-
+for i in range(10000):
+    write_check(gen_new_check(),"BERK","VIB","WRIE","DEV",298 ,"TABL")

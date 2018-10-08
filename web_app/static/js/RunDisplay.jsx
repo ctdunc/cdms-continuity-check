@@ -49,7 +49,11 @@ class RunDisplay extends Component{
 						height:"70vh"
 					}}
 					className="-striped -highlight"
-				/>
+					subComponent={row  =>{
+						return(
+							<div> test </div>
+						);}}
+					/>
 			</div>
 		);
 	}
