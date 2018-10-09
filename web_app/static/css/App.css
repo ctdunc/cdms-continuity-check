@@ -1,8 +1,4 @@
-/* Top Level Styling */
-div {
-max-width:100%;
-overflow-x:hidden;
-}
+/* Top Level Styling */ 
 /* Header Styles */
 #header{
 	position:fixed;
@@ -21,13 +17,9 @@ overflow-x:hidden;
 
 /* Content Styling */
 #content{
+	top:5vh;
 	position:fixed;
-	top: 5vh;
-	width:100vw;
-	height:95vh;
-	overflow:auto;
-}
-.ReactTable{
-	position:static;
+	width:100vh;
+	height:100vh; 
 }
 

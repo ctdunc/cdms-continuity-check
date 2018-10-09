@@ -47,7 +47,8 @@ class RunDisplay extends Component{
 						}
 				]}
 					style={{
-						height:"70vh"
+						height:"95vh",
+						width:"100vw"
 					}}
 					className="-striped -highlight"
 					SubComponent={row =>{
