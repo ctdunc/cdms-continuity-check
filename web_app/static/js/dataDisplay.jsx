@@ -7,6 +7,8 @@ class DataDisplay extends Component{
 		super(props,context);
 		this.getData=this.getData.bind(this)
 		this.state={data:[]}
+		this.tableName = props.tableName
+		console.log(props.tableName);
 		this.getData();
 	}
 	render(){
@@ -54,8 +56,10 @@ class DataDisplay extends Component{
 		);
 	}
 	getData(){
-		$.get(window.location.href+'expectedData', (data) => {
+		//tableName is the prop I want to work with
+		$.get(window.location.href+'run/'+this.tableName, (data) => {
 			this.updateData(data);
+			console.log(this.props);
 			console.log(data)
 		}
 		);

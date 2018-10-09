@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
+import DataDisplay from './dataDisplay';
 var $ = require('jquery');
 import "react-table/react-table.css";
 
@@ -49,10 +50,14 @@ class RunDisplay extends Component{
 						height:"70vh"
 					}}
 					className="-striped -highlight"
-					subComponent={row  =>{
+					SubComponent={row =>{
 						return(
-							<div> test </div>
-						);}}
+							<DataDisplay
+								tableName={row.original[7]}
+							/>
+
+						);
+					}}
 					/>
 			</div>
 		);

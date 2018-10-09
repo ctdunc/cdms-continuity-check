@@ -1,5 +1,5 @@
-from sql_formatter import *
-from gen_testing_data import *
+from sql_helper.sql_formatter import *
+from sql_helper.gen_testing_data import *
 from mysql.connector import (connection)
 
 default_log = "RunHistory"
@@ -8,7 +8,22 @@ local_user = 'cdms'
 local_pass = 'cdms'
 local_host = 'localhost'
 
+def get_check(tablename):
+    try:
+        conn = connection.MySQLConnection(
+            user = local_user,
+            password=local_pass,
+            host=local_host,
+            database=local_database)
+        cursor = conn.cursor()
+    except Exception as e:
+        return "Unable to connect to SQL Database! Error: "+str(e)
 
+    command = format_get_check(tablename)
+    
+    cursor.execute(command)
+    data=cursor.fetchall()
+    return data 
 def write_check(data,
         institution,
         vib,
@@ -20,9 +35,6 @@ def write_check(data,
     # [Signal 1, Signal 2, Minimum, Maxmimum, Measured, Unit, Pass?]
     # IF IT IS NOT PASSED to the function in this order, data may be written to the table incorrectly.
     # Eventually, this should only take in pandas.dataframe objects, with an appropriate check for proper field names.
-
-
-    # attempt connection to sql database, exit if failure.
     try:
         conn = connection.MySQLConnection(
             user = local_user,
@@ -32,7 +44,9 @@ def write_check(data,
         cursor = conn.cursor()
     except Exception as e:
         return "Unable to connect to SQL Database! Error: "+str(e)
-    # Randomly generate 10-character string to serve as relation between individual run and table of runs.
+
+    # attempt connection to sql database, exit if failure.
+       # Randomly generate 10-character string to serve as relation between individual run and table of runs.
     # This information won't be exposed to the user, it serves purely as an internal method of organizing our database.
     # Should allow at least two million continuity checks before any speed-related problems arise,
     # but making this number larger is a trivial task that we can do later, if need be.
@@ -67,5 +81,5 @@ def write_check(data,
     conn.commit()
     conn.close()
     return "Sucess! Data written to: "+table_name
-for i in range(10000):
-    write_check(gen_new_check(),"BERK","VIB","WRIE","DEV",298 ,"TABL")
+
+    

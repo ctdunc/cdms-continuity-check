@@ -95,3 +95,17 @@ def format_check_row(table, sig_1, sig_2, minimum, maximum, measured,unit,passed
             measure=measured,
             unitt=unit,
             passing=passed)
+def format_get_check(tablename):
+    get_format="""
+        SELECT
+            Signal_1,
+            Signal_2,
+            Minimum,
+            Maximum,
+            Measured,
+            Unit,
+            Pass
+        FROM
+            {table};
+    """
+    return get_format.format(table=tablename)
