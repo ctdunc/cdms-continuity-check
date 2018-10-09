@@ -37,17 +37,26 @@ class DataDisplay extends Component{
 						{
 						Header: "Continuity",
 						columns: [
+						
 						{
-							Header: "Expected Continuity",
+							Header: "Min",
 							accessor: '2'
 						},
 						{
-							Header: "Min",
+							Header:	"Max",
 							accessor: '3'
 						},
 						{
-							Header:	"Max",
-							accessor: '4'
+							Header: "Measured",
+							accessor:'4'
+						},
+						{
+							Header:"unit",
+							accessor:'5'
+						},
+						{
+							Header:"Pass",
+							accessor:'6'
 						}
 						]}
 					]}
