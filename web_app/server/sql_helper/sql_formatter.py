@@ -42,7 +42,6 @@ def format_log_row(log_table_name,
             temperature=temp,
             validator=validation_table,
             timestamp=datetime.datetime.now().strftime('%Y-%m-%d %X'))
-
     return log_formatted
 
 def format_check_table():

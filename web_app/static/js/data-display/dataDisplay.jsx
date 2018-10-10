@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactTable from "react-table";
 var $ = require('jquery');
 import "react-table/react-table.css";
-import "../css/App.css"
+import "../../css/App.css"
 class DataDisplay extends Component{
 	constructor(props,context){
 		super(props,context);

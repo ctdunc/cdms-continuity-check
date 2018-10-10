@@ -2,9 +2,9 @@ import React from "react";
 //import styles
 import "../css/App.css";
 //import components
-import NewRunMenu from "./newRunMenu";
-import NewRunButton from "./newRunButton";
-import RunDisplay from "./RunDisplay";
+import NewRunMenu from "./run-menu/newRunMenu";
+import NewRunButton from "./run-menu/newRunButton";
+import RunDisplay from "./data-display/RunDisplay";
 export default class App extends React.Component {
 	constructor(props,context){
 		super(props,context);
