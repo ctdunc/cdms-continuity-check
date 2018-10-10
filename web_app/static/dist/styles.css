@@ -22,6 +22,12 @@
 	width:100vh;
 	height:100vh; 
 }
+#mounted{
+	top:5vh;
+	position:fixed;
+	width:100vh;
+	height:100vh;
+}
 
 #flyoutMenu {
   width: 40vw;

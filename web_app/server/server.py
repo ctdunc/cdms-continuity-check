@@ -22,18 +22,8 @@ def getData(run):
 # TODO: move this over to the sql_helper class
 @app.route("/runHistory", methods=['GET'])
 def getRuns():
-    try:
-        conn=mysql.connect()
-        cursor=conn.cursor()
-        cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM RunHistory')
-        data = cursor.fetchall()
-        return jsonify(data)
-    except Exception as e:
-        return str(e)
-    finally:
-        cursor.close()
-        conn.close()
-
+  data = get_runs()
+  return jsonify(data)
 
 if __name__ == "__main__":
     app.run()
