@@ -2,7 +2,8 @@
 Berkeley CDMS laboratory's continuity check web application.
 
 ## Features
-[x]  Table
+[ ]  Table
+[ ]  Start Menu
 
 ## Dependencies
 This  application is being built using a [React](https://reactjs.org) frontend, and a [Flask](http://flask.pocoo.org) server.
