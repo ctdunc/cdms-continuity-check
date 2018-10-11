@@ -19,7 +19,8 @@ class RunDisplay extends Component{
 					columns = {[
 						{
 							Header:"Date",
-							accessor: '0'
+							accessor: '0',
+							//render: {props => <span>{moment.utc(props.value).format('DD/MM/YYYY')}}</span>
 						},
 						{
 							Header:"Institution",

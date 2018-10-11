@@ -9,6 +9,7 @@ local_pass = 'cdms'
 local_host = 'localhost'
 
 def get_check(tablename):
+    # Try to connect to server, log result in server if failure.
     try:
         conn = connection.MySQLConnection(
             user = local_user,
@@ -17,13 +18,31 @@ def get_check(tablename):
             database=local_database)
         cursor = conn.cursor()
     except Exception as e:
-        return "Unable to connect to SQL Database! Error: "+str(e)
+        print("Unable to connect to SQL Database! Error: "+str(e))
+        return "failure"
 
     command = format_get_check(tablename)
     
     cursor.execute(command)
     data=cursor.fetchall()
+    conn.close()
     return data 
+def get_runs():
+    try:
+        conn = connection.MySQLConnection(
+                user = local_user,
+                password = local_pass,
+                host = local_host,
+                database = local_database)
+        cursor=conn.cursor()
+    except Exception as e:
+        print("Unable to connect to SQL Database! Error:"+str(e))
+        return "failure"
+    cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM RunHistory')
+    data=cursor.fetchall()
+    conn.close()
+    return data
+
 def write_check(data,
         institution,
         vib,
@@ -35,6 +54,9 @@ def write_check(data,
     # [Signal 1, Signal 2, Minimum, Maxmimum, Measured, Unit, Pass?]
     # IF IT IS NOT PASSED to the function in this order, data may be written to the table incorrectly.
     # Eventually, this should only take in pandas.dataframe objects, with an appropriate check for proper field names.
+
+
+    # Try to connect to server, log result in server if failure.
     try:
         conn = connection.MySQLConnection(
             user = local_user,
@@ -43,13 +65,12 @@ def write_check(data,
             database=local_database)
         cursor = conn.cursor()
     except Exception as e:
-        return "Unable to connect to SQL Database! Error: "+str(e)
+        print("Unable to connect to SQL Database! Error: "+str(e))
+        return "failure"
 
-    # attempt connection to sql database, exit if failure.
-       # Randomly generate 10-character string to serve as relation between individual run and table of runs.
+    # Randomly generate 10-character string to serve as relation between individual run and table of runs
     # This information won't be exposed to the user, it serves purely as an internal method of organizing our database.
-    # Should allow at least two million continuity checks before any speed-related problems arise,
-    # but making this number larger is a trivial task that we can do later, if need be.
+    # Should allow at least two million continuity checks before any speed-related problems arise.
     exist_check = "SHOW TABLES LIKE '{name}'"
         
     # Create New Table
@@ -82,4 +103,3 @@ def write_check(data,
     conn.close()
     return "Sucess! Data written to: "+table_name
 
-    

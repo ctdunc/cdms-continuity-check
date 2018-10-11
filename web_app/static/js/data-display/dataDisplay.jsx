@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import ReactTable from "react-table";
 var $ = require('jquery');
 import "react-table/react-table.css";
+import "../../css/App.css"
 class DataDisplay extends Component{
 	constructor(props,context){
 		super(props,context);
 		this.getData=this.getData.bind(this)
-		this.state={data:[]}
+		this.state={data:[],style:{}}
 		this.tableName = props.tableName
 		console.log(props.tableName);
 		this.getData();
@@ -15,12 +16,6 @@ class DataDisplay extends Component{
 		return(
 			<div>
 				<ReactTable data={this.state.data} 
-					getTheadProps={() => {
-							return {
-								style: {
-									background: "red",
-								}
-							}}}	
 					columns={[
 					{
 						Header: "Signal",
@@ -60,6 +55,8 @@ class DataDisplay extends Component{
 						}
 						]}
 					]}
+					className="-striped -highlight"
+					style={this.state.style}
 				/>
 			</div>
 		);
@@ -68,8 +65,6 @@ class DataDisplay extends Component{
 		//tableName is the prop I want to work with
 		$.get(window.location.href+'run/'+this.tableName, (data) => {
 			this.updateData(data);
-			console.log(this.props);
-			console.log(data)
 		}
 		);
 	}
