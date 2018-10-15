@@ -22,16 +22,19 @@ disconnected_lower = 40.0e6    # lower bound for the resistance between supposed
 
 # MODIFY to True if ALL test need to be done
 do_test_all = False
+# do_test_all = True
 
 # combinations/channels
 combinations_of_interest = [["SQ","SQ_RTN"],["SQF","SQF_RTN"],["TES_BIAS","AGND"],["AGND","R+"],["AGND","R-"]]
-channels_of_interest = [0,1,2,3,4,5,6,7,8,9,10,11]
-
+channels_of_interest = [0,1,2,3,4,5]   	# TL
+# channels_of_interest = [6,7,8,9,10,11] 	# TR
+# channels_of_interest = [3,4,5]		# BL, isothermal
+# channels_of_interest = [0,1,2]		# BR, isothermal
 
 # File name
 tt = int(time.time())
 tt_loc = time.localtime(tt)
-tt_str= time.strftime("%Y%d%m_%H%M",tt_loc)
+tt_str= time.strftime("%Y%m%d_%H%M",tt_loc)
 file_all = "results/"+ tt_str+"_result"
 file_failed = "results/" + tt_str+"_failed_result"
 if do_test_all:
