@@ -363,14 +363,3 @@ end = time.time()
 print('Runtime:', round(end - start, 3), "s")
 
 tn.close()
-
-
-
-
-
-
-
-
-
-
-
