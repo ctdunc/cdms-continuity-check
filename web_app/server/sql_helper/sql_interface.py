@@ -8,7 +8,28 @@ local_database = "CDMSTest"
 local_user = 'cdms'
 local_pass = 'cdms'
 local_host = 'localhost'
-
+def get_vib_signal_dict():
+    try:
+        conn = connection.MySQLConnection(
+            user=local_user,
+            password = local_pass,
+            host=local_host,
+            database = local_database)
+        cursor=conn.cursor()
+    except Exception  as e:
+        print("Failed to connect to database! Error: "+str(e))
+        return "Failure"
+    command = """
+        SELECT
+            VIB_Name, Signal_Name
+        FROM 
+            channel_naming;
+    """
+    cursor.execute(command)
+    data=cursor.fetchall()
+    conn.close()
+    return data
+    
 def get_validation_request(expected_table='',test_rows=[{}]):
     try:
         conn = connection.MySQLConnection(

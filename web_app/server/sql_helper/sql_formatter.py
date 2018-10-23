@@ -2,6 +2,7 @@ import datetime
 import random
 import string
 # TODO: make this into a class that can be called
+
 def format_validation_request(expected_table,test_rows=[{}]):
     request_format="""
         SELECT
