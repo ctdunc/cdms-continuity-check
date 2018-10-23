@@ -18,12 +18,12 @@ expected_result = np.genfromtxt(
         )
 
 for r in expected_result:
-    format_str="""INSERT INTO continuity_prediction (signal_1, signal_2, expected_continuity, min, max)
+    format_str="""INSERT INTO slac_expected_values (Signal_1, Signal_2, Expected_Continuity, Minimum, Maximum)
         VALUES ("{sig1}","{sig2}","{exp_cont}","{min}","{max}");"""
     if r[2].startswith('Dis'):
-        r[2]=False
+        r[2]=0
     else: 
-        r[2]=True
+        r[2]=1
     
     sql_command = format_str.format(sig1=r[0],sig2=r[1],exp_cont=r[2],min=r[3],max=r[4])
     cursor.execute(sql_command)
