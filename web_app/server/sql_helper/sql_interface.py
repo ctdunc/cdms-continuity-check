@@ -21,7 +21,7 @@ def get_vib_signal_dict():
         return "Failure"
     command = """
         SELECT
-            VIB_Name, Signal_Name
+            Matrix_location, DB_78_pin, VIB_pin, Signal_name 
         FROM 
             channel_naming;
     """
@@ -140,7 +140,7 @@ def write_check(data,
    # Write data to new table
     for d in data:
        enter_d = format_check_row(table_name,
-               d[0],d[1],d[2],d[3],d[4],d[5],d[6])
+               d[   0],d[1],d[2],d[3],d[4],d[5],d[6])
        cursor.execute(enter_d)
     # Commit Changes, exit
     conn.commit()
