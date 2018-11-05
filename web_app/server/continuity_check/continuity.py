@@ -45,7 +45,7 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
     dmm = dmm_interface() 
     
     # create array in which to store all data, even though we want to yield it to the server.
-    final_result_dtype = np.dtype([('signal_1','U20'),('signal_2','U20'),('expected_continuity','b'),('min',float),('max',float),('passing','b')])
+    final_result_dtype = np.dtype([('signal_1','U20'),('signal_2','U20'),('expected_continuity','b'),('min',float),('max',float),('measured',float),('passing','b')])
     final_result = np.empty(final_result_dtype)
 
     # perform disconnected tests

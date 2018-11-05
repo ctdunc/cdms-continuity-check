@@ -21,9 +21,9 @@ class dmm_interface:
         
         passed = measurement > minimum and measurement < maximum
         if passed:
-            return np.append(expected_value,1,axis=0)
+            return np.append(expected_value,measurement,1,axis=1)
         else:
-            return np.append(expected_value,0,axis=0)
+            return np.append(expected_value,measurement,0,axis=1)
 
     def parallel_disconnect(self,expected_values):
         # this should call the #open_test lua function, and return either true or false in 0th index             
@@ -42,6 +42,7 @@ class dmm_interface:
             open_tests = "\""
             for loc in open_tests_vals:
                 open_tests+=loc+"\",\""
+            open_tests = open_tests[:-2]
             telnet_cmd = ("open_test(\""+i+"\",{"+open_tests+"})\n").encode("ascii") 
 
             # perform measurement, read into float dtype
@@ -56,7 +57,8 @@ class dmm_interface:
             passed = measurement > self.disconnected_lower
             if passed:
                 # appends successful checks to passing data
-                success_data = np.append(expected_values,1*np.ones(expected_values.shape()[0]),axis=0)
+                shapearr = np.ones(expected_values.shape()[0])
+                success_data = np.append(expected_values,measurement*shapearr,1*shapearr,axis=1)
                 yield success_data 
             elif not passed:
                 new_checks = np.split(expected_values,2)

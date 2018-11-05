@@ -140,7 +140,14 @@ def write_check(data,
    # Write data to new table
     for d in data:
        enter_d = format_check_row(table_name,
-               d[   0],d[1],d[2],d[3],d[4],d[5],d[6])
+               d['signal_1'],
+               d['signal_2'],
+               d['min'],
+               d['max'],
+               d['measured'],
+               "Ohm",
+               d['passing']
+               )
        cursor.execute(enter_d)
     # Commit Changes, exit
     conn.commit()
