@@ -3,12 +3,6 @@ from flaskext.mysql import MySQL
 from sql_helper.sql_interface import *
 app = Flask(__name__, static_folder="../static/dist",template_folder="../static")
 
-mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = 'cdms'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'cdms'
-app.config['MYSQL_DATABASE_DB']='CDMSTest'
-app.config['MYSQL_DATABASE_HOST']='localhost'
-mysql.init_app(app)
 
 @app.route("/")
 def index():

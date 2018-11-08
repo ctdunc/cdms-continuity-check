@@ -19,7 +19,7 @@
 #content{
 	top:5vh;
 	position:fixed;
-	width:100vh;
+	width:100vw;
 	height:100vh; 
 }
 #mounted{
@@ -28,3 +28,37 @@
 	width:100vh;
 	height:100vh;
 }
+
+
+.checkOpts{
+	border-radius:5px;
+	padding:10px;
+	width:50%;
+}
+.checkOpts>.row:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.checkOpts>label{
+	display:inline-block;
+	padding:12px 12px 12px 0;
+}
+.checkOpts>.col-25{
+	float:left;
+	width:25%;
+	margin-top:6px;
+}
+.col-75{
+	float:right;
+	width:75%;
+	margin-top: 6px;
+}
+.checkOpts>label>*{
+	width: 40%;
+	padding:12px;
+	border: 1px solid #ccc;
+	float: right;
+	display: inline-block;
+}
+

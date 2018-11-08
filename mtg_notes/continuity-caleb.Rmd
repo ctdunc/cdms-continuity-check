@@ -1,0 +1,11 @@
+Things that need to stay the way they are:
++ measure must have:
+		row is just a row of the SQL tabe (Sig 1, Sig 2, Min, Max)
+		
+		has to be able to route the signal to a channell on the DMM
+
+implementing parallel processing? Can define number of workers to operate at any given time.
+
+Other helper functions that add rows to tables etc.
+
+

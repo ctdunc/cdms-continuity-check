@@ -1,20 +1,18 @@
 import React from "react";
+
 //import styles
 import "../css/App.css";
 //import components
-import NewRunMenu from "./run-menu/newRunMenu";
-import NewRunButton from "./run-menu/newRunButton";
-import RunDisplay from "./data-display/RunDisplay";
+import DisplayManager from "./displayManager.jsx";
 export default class App extends React.Component {
 	constructor(props,context){
 		super(props,context);
 
 		this.state = {
-			menuVisible: false
+			currentDisplay: "runDisplay"
 		};
-		this.getSampleData = this.getSampleData.bind(this);
-		this.handleMenuClick = this.handleMenuClick.bind(this);
-		this.toggleMenu = this.toggleMenu.bind(this);
+		this.goToNewCheck = this.goToNewCheck.bind(this);
+		this.goToRunDisplay = this.goToRunDisplay.bind(this);
 	}
 
 	//Display
@@ -22,36 +20,29 @@ export default class App extends React.Component {
 		return(
 			<div id="top">
 				<div id="header">
-					<NewRunButton handleMouseDown={this.handleMenuClick}/>
-				</div>
-				<div>
-					<NewRunMenu handleMouseDown={this.handleMenuClick} 
-						menuVisibility={this.state.menuVisible}/>
+					<button
+						onMouseDown={this.goToRunDisplay}
+					>View Data</button>
+					<button
+						onMouseDown={this.goToNewCheck}
+					>New Check</button>
+					
 				</div>
 				<div id="content">
-					<RunDisplay/>
+					<DisplayManager className={this.state.currentDisplay}/>
 				</div>
 			</div>
 		);
 	}
-	getSampleData(){
-	
-	}
 	//State Management
-	handleMenuClick(e){
-		this.toggleMenu();
-
-		console.log("menu toggled!")
+	goToNewCheck(e){
+		console.log("check");
+		this.setState({currentDisplay: "startCheckMenu"})
 		e.stopPropagation();
 	}
-
-	toggleMenu(){
-		this.setState(
-			{
-				menuVisible: !this.state.menuVisible
-			}
-		);
+	goToRunDisplay(e){
+		this.setState({currentDisplay: "runDisplay"});
+		e.stopPropagation();
 	}
-
 
 }
