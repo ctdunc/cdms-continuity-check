@@ -1,7 +1,45 @@
 import datetime
 import random
 import string
+# TODO: make this into a class that can be called
 
+def format_validation_request(expected_table,test_rows=[{}]):
+    request_format="""
+        SELECT
+            Signal_1,
+            Signal_2,
+            Expected_Continuity,
+            Minimum,
+            Maximum
+        FROM
+            {table}
+        WHERE
+            {conditions}
+        """
+    if not test_rows:
+        row_selector = "1=1"
+    else:
+        first_up = True
+        search = ""
+        for test in test_rows:
+            if first_up:
+                search+="("
+                first_up=False
+            else:
+                search+=" OR ("
+            first = True
+            for key,condition in test.items():
+                if first:
+                    search_string = str(key)+"=\""+str(condition)+"\""
+                    first = False
+                else:
+                    search_string = "AND "+str(key)+"=\""+str(condition)+"\""
+                search+=search_string
+            search+=") "
+        row_selector=search
+    returned_request = request_format.format(table=expected_table,conditions=row_selector)
+    return returned_request
+                
 def format_log_row(log_table_name,
         check_table_name,
         institution,
@@ -107,4 +145,17 @@ def format_get_check(tablename):
         FROM
             {table};
     """
+    return get_format.format(table=tablename)
+
+def format_get_expect(tablename):
+    get_format="""
+        SELECT
+            Signal_1,
+            Signal_2,
+            Expected_Continuity,
+            Minimum,
+            Maximum
+        FROM
+            {table};
+        """
     return get_format.format(table=tablename)

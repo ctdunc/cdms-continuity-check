@@ -2,11 +2,54 @@ from sql_helper.sql_formatter import *
 from sql_helper.gen_testing_data import *
 from mysql.connector import (connection)
 
+# TODO: Make this operate as a class, rather than a series of functions to cut down on number of database connections
 default_log = "RunHistory"
 local_database = "CDMSTest"
 local_user = 'cdms'
 local_pass = 'cdms'
 local_host = 'localhost'
+def get_vib_signal_dict():
+    try:
+        conn = connection.MySQLConnection(
+            user=local_user,
+            password = local_pass,
+            host=local_host,
+            database = local_database)
+        cursor=conn.cursor()
+    except Exception  as e:
+        print("Failed to connect to database! Error: "+str(e))
+        return "Failure"
+    command = """
+        SELECT
+            Matrix_location, DB_78_pin, VIB_pin, Signal_name 
+        FROM 
+            channel_naming;
+    """
+    cursor.execute(command)
+    data=cursor.fetchall()
+    conn.close()
+    return data
+    
+def get_validation_request(expected_table='',test_rows=[{}]):
+    try:
+        conn = connection.MySQLConnection(
+            user=local_user,
+            password = local_pass,
+            host=local_host,
+            database = local_database)
+        cursor=conn.cursor()
+    except Exception  as e:
+        print("Failed to connect to database! Error: "+str(e))
+        return "Failure"
+
+    if not expected_table:
+        expected_table = 'slac_expected_values'
+    if not test_rows:
+        0==0
+    command = format_validation_request(expected_table,test_rows)
+    cursor.execute(command)
+    result = cursor.fetchall()
+    return result
 
 def get_check(tablename):
     # Try to connect to server, log result in server if failure.
@@ -27,6 +70,7 @@ def get_check(tablename):
     data=cursor.fetchall()
     conn.close()
     return data 
+
 def get_runs():
     try:
         conn = connection.MySQLConnection(
@@ -96,7 +140,14 @@ def write_check(data,
    # Write data to new table
     for d in data:
        enter_d = format_check_row(table_name,
-               d[0],d[1],d[2],d[3],d[4],d[5],d[6])
+               d['signal_1'],
+               d['signal_2'],
+               d['min'],
+               d['max'],
+               d['measured'],
+               "Ohm",
+               d['passing']
+               )
        cursor.execute(enter_d)
     # Commit Changes, exit
     conn.commit()

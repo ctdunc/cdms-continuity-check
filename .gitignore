@@ -2,3 +2,5 @@ node_modules/
 __pycache__/
 __init.py__
 *.Rmd
+.pyc
+mtg_notes/
