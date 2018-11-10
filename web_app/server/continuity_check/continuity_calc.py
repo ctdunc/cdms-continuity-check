@@ -3,7 +3,6 @@ import telnetlib
 import sys
 sys.path.append("../")
 
-from continuity_sample_generator import *
 class dmm_interface:
     def __init__(self,host='',disconnected_lower=40.0e6):
        
@@ -17,7 +16,7 @@ class dmm_interface:
         # this should call the #resistance_test lua function, and return either true or false
         signal_1,signal_2 = expected_value['signal_1'],expected_value['signal_2']
         minimum,maximum = expected_value['min'],expected_value['max']
-        self.tn.write(("resistance_test("\""+signal_1+"\",\""+signal_2+"\")\n").encode('ascii'))
+        self.tn.write(("resistance_test(\""+signal_1+"\",\""+signal_2+"\")\n").encode('ascii'))
         measurement = self.tn.read_until(("Ohm").encode("ascii"))
         measurement = measurement.split()
         measurement = float(measurement[0])

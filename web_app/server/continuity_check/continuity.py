@@ -29,7 +29,7 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
         expected_values['signal_2'] = np.where(expected_values['signal_2']==k['Signal_name'], # condition
                 k['DB_78_pin'], # returns matrix location in correct index if condition
                 expected_values['signal_2']) # if not condition, returns initial value
-
+    print("completed this component of the thing")
     # these arrays are created to store the tests we want to perform using our parallel algorithm, 
     # and our simple measurement function.
     # this should improve efficiency because it will allow us to split the parallel (connected) 
