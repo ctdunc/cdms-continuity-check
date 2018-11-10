@@ -3,7 +3,7 @@ from sql_helper.gen_testing_data import *
 from mysql.connector import (connection)
 
 # TODO: Make this operate as a class, rather than a series of functions to cut down on number of database connections
-default_log = "RunHistory"
+default_log = "continuity_history"
 local_database = "CDMSTest"
 local_user = 'cdms'
 local_pass = 'cdms'

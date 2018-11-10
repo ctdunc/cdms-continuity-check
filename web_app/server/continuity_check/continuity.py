@@ -46,7 +46,7 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
     
     # create array in which to store all data, even though we want to yield it to the server.
     final_result_dtype = np.dtype([('signal_1','U20'),('signal_2','U20'),('expected_continuity','b'),('min',float),('max',float),('measured',float),('passing','b')])
-    final_result = np.empty(final_result_dtype)
+    final_result = np.empty(shape=final_result_dtype.shape,dtype=final_result_dtype)
 
     # perform disconnected tests
         # this line creates a new generator, over which we can iterate, yielding data to the server in real time
@@ -54,25 +54,26 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
         # each yield statement will yield a test with a certain number of passing or failing values.
     disconnect_generator = dmm.parallel_disconnect(tests_disconnected)
 
+
     # iterates over generator
     yield "Starting parallel disconnected tests..."
     start_disconnect = time.time()
     for test in disconnect_generator:
-        for result in test:
-            final_result.append(result)
+        for i in test:
+            final_result = np.append(final_result,np.array(i,dtype=final_result.dtype))
         yield test
-    yield ("Finished parallell disconnected tests in " + ("--- %s seconds ---" % (time.time() - start_disconect)))
+    yield ("Finished parallell disconnected tests in " + ("--- %s seconds ---" % (time.time() - start_disconnect)))
     # perform connected tests
     # first, create generator over which to iterate
-    connect_generator = (dmm.individual_continuity(i) for i in tests_connected)
+    connect_generator = (dmm.individual_continuity(i)  for i in tests_connected)
 
     # proceed with iteration
     yield "Starting individual connected tests..."
     start_connect = time.time()
     for result in connect_generator:
-        final_result.append(result)
+        final_result = np.append(final_result,np.array(result,dtype=final_result.dtype))
         yield result
-    yield ("Finished individual connected tests in " + ("--- %s seconds ---" % (time.time - start_connect)))
+    yield ("Finished individual connected tests in " + ("--- %s seconds ---" % (time.time() - start_connect)))
 
     # re-translate so that we have human-readable signals
     for k in vib_signal_dict:
