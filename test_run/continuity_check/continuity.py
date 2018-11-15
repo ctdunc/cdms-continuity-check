@@ -96,4 +96,4 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
 
     
 
-perform_check()"
+perform_check()
