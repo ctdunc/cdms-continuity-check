@@ -28,6 +28,9 @@ const config= {
 			}
 		]
 	},
+	node: {
+		fs: 'empty'
+	},
 	plugins: [ new MiniCssExtractPlugin({filename: 'styles.css'})] 
 };
 module.exports = config

@@ -10,6 +10,8 @@ from continuity_check.continuity_calc import *
 def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='',device='',temp='',vib=''):
     # All of the reading of data that occurs here is from functions found in the sql_interface.py document.
     # reads in dict of check, converts to numpy array
+
+    ## NOT WORKING CORRECTLY---NEED TO UNDERSTAND MACHINE, SOME HAVE DB_78_pin DUPLICATE VALUES
     vib_signal_dtype = np.dtype([('Matrix_location','U5'),('DB_78_pin','U5'),('VIB_pin','U5'),('Signal_name','U20')])
     vib_signal_dict = np.array(get_vib_signal_dict(),vib_signal_dtype) # read in values from SQL
     vib_signal_dict = vib_signal_dict[np.where(vib_signal_dict['Signal_name']!='x')] # sort out elements without mapping
@@ -29,7 +31,6 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
         expected_values['signal_2'] = np.where(expected_values['signal_2']==k['Signal_name'], # condition
                 k['DB_78_pin'], # returns matrix location in correct index if condition
                 expected_values['signal_2']) # if not condition, returns initial value
-
     # these arrays are created to store the tests we want to perform using our parallel algorithm, 
     # and our simple measurement function.
     # this should improve efficiency because it will allow us to split the parallel (connected) 
@@ -41,7 +42,7 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
     #disconnected, can be done in parallel
     tests_disconnected = expected_values[np.where(expected_values['expected_continuity']==0)]
 
-    # instantiate DMM interface, with option to pass a plot parameter, lower bound for disconnection.
+# instantiate DMM interface, with option to pass a plot parameter, lower bound for disconnection.
     dmm = dmm_interface() 
     
     # create array in which to store all data, even though we want to yield it to the server.
@@ -61,7 +62,7 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
     for test in disconnect_generator:
         for i in test:
             final_result = np.append(final_result,np.array(i,dtype=final_result.dtype))
-        yield test
+            yield i
     yield ("Finished parallell disconnected tests in " + ("--- %s seconds ---" % (time.time() - start_disconnect)))
     # perform connected tests
     # first, create generator over which to iterate
@@ -85,17 +86,15 @@ def perform_check(expected_table='',tests=[],channels=[],institution='',wiring='
                 k['Signal_name'],
                 final_result['signal_2']
             )
-                
     # finally, write data to SQLdb
     # TODO: fix the validation table
     write_check(final_result,institution,vib,wiring,device,temp,'') # final element is a placeholder for the appropriate validation table
     
     # Let the user know that the data has been written/all tests are completed, re-yield compiled list of all failures
     yield final_result[np.where(final_result['passing']==0)]
+    
     yield "Finished."
 
-for i in perform_check():
-    0==0 
     
 
 

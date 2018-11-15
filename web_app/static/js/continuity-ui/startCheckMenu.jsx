@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import io from 'socket.io-client';
+var $ = require('jquery');
 
+import CheckLog from './checkLog';
 export default class StartCheckMenu extends Component{
 	constructor(props,context){
 		super(props,context);
-		this.state={}
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleMultipleInputChange = this.handleMultipleInputChange.bind(this);
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.state={};
 	}
-
+	
+	
 	render(){
 		return(
 			<div>
@@ -18,11 +19,11 @@ export default class StartCheckMenu extends Component{
 						<label className="col-25">
 							Expected Values
 							<select name="expected_table" 
-								value={this.state.expected_table} 
+								value={this.props.expected_table} 
 								onChange={this.handleInputChange} 
 								className="col-75">	
-									<option value='slac_expected_values'>slac</option>
-									<option value='slac_2'>slac2</option>
+								<option value='slac_expected_values'>slac</option>
+								<option value='slac_2'>slac2</option>
 							</select>
 						</label>
 					</div>
@@ -65,11 +66,10 @@ export default class StartCheckMenu extends Component{
 						</label>
 					</div>
 					<input type="submit" value="Submit"/>
-				</form>			
+				</form>	
 			</div>
 		);
 	}
-
 	handleInputChange(e){
 		const target = e.target;
 		console.log(target);
@@ -78,19 +78,5 @@ export default class StartCheckMenu extends Component{
 		this.setState({
 			[name]: value
 		});
-	}
-	handleMultipleInputChange(e){
-		console.log(e.menuPortalTarget);
-		console.log(e);
-		const value = e;
-		this.setState({
-			[name]: value
-		});
-		console.log(this.state);
-	}
-	handleFormSubmit(e){
-		e.preventDefault()
-		console.log("submit")
-	}
-	
+}
 }

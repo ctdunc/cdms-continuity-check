@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
 //import styles
-import "../css/App.css";
+import '../css/App.css';
 //import components
-import DisplayManager from "./displayManager.jsx";
+import DisplayManager from './displayManager.jsx';
 export default class App extends React.Component {
 	constructor(props,context){
 		super(props,context);
 
 		this.state = {
-			currentDisplay: "runDisplay"
+			currentDisplay: 'runDisplay'
 		};
 		this.goToNewCheck = this.goToNewCheck.bind(this);
 		this.goToRunDisplay = this.goToRunDisplay.bind(this);
@@ -36,12 +36,12 @@ export default class App extends React.Component {
 	}
 	//State Management
 	goToNewCheck(e){
-		console.log("check");
-		this.setState({currentDisplay: "startCheckMenu"})
+		console.log('check');
+		this.setState({currentDisplay: 'startCheckMenu'});
 		e.stopPropagation();
 	}
 	goToRunDisplay(e){
-		this.setState({currentDisplay: "runDisplay"});
+		this.setState({currentDisplay: 'runDisplay'});
 		e.stopPropagation();
 	}
 
