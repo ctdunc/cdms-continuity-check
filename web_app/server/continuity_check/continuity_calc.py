@@ -5,8 +5,13 @@ sys.path.append("../")
 
 from continuity_check.continuity_sample_generator import *
 class dmm_interface:
-    def __init__(self,host='',disconnected_lower=40.0e6):
+    def __init__(self,vib_signal_dict,host='',disconnected_lower=40.0e6):
         self.disconnected_lower=disconnected_lower      
+        self.vib_signal_dict=vib_signal_dict
+
+    def __translate_signal(signal):
+        signal_result = self.vib_signal_dict[np.where(self.vib_signal_dict['Signal_name']==signal)]
+        return signal_result
 
     def individual_continuity(self,expected_value):
         # this should call the #resistance_test lua function, and return either true or false

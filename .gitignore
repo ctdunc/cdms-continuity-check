@@ -4,3 +4,4 @@ __init.py__
 *.Rmd
 .pyc
 mtg_notes/
+dump.rdb

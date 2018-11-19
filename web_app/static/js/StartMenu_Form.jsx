@@ -8,6 +8,7 @@ export default class StartMenu_Form extends Component{
 
 	render(){
 		return(
+			<div>
 			<form>
 				<div className="row">
 					<label className="col-25">
@@ -56,6 +57,8 @@ export default class StartMenu_Form extends Component{
 				</div>
 				<input type="submit" value="Submit"/>
 			</form>
+			<button onMouseDown={this.props.startTask} />
+			</div>
 		);
 	}
 }
