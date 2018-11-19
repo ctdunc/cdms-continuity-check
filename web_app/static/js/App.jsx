@@ -1,48 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-//import styles
+import DisplayManager from './DisplayManager';
+
+
 import '../css/App.css';
-//import components
-import DisplayManager from './displayManager.jsx';
-export default class App extends React.Component {
+
+export default class ContinuityApp extends Component{
 	constructor(props,context){
 		super(props,context);
-
-		this.state = {
-			currentDisplay: 'runDisplay'
-		};
-		this.goToNewCheck = this.goToNewCheck.bind(this);
-		this.goToRunDisplay = this.goToRunDisplay.bind(this);
+		this.state = {show: 'datadisplay'}
+	
+		this.showStartMenu=this.showStartMenu.bind(this);
+		this.showDataDisplay=this.showDataDisplay.bind(this);
 	}
-
-	//Display
+	showStartMenu(e){
+		this.setState({show: 'startmenu'});
+		e.stopPropagation();
+	}
+	showDataDisplay(e){
+		this.setState({show: 'datadisplay'});
+		e.stopPropagation();
+	}
 	render(){
 		return(
-			<div id="top">
-				<div id="header">
-					<button
-						onMouseDown={this.goToRunDisplay}
-					>View Data</button>
-					<button
-						onMouseDown={this.goToNewCheck}
-					>New Check</button>
-					
+			<div className="page">
+				<div className="header">
+					<button onMouseDown={this.showStartMenu}>Start Check</button>
+					<button onMouseDown={this.showDataDisplay}>View Data</button>
 				</div>
-				<div id="content">
-					<DisplayManager className={this.state.currentDisplay}/>
+				<div className="content">
+					<DisplayManager show={this.state.show}/>
 				</div>
 			</div>
 		);
 	}
-	//State Management
-	goToNewCheck(e){
-		console.log('check');
-		this.setState({currentDisplay: 'startCheckMenu'});
-		e.stopPropagation();
-	}
-	goToRunDisplay(e){
-		this.setState({currentDisplay: 'runDisplay'});
-		e.stopPropagation();
-	}
 
 }
+

@@ -82,7 +82,7 @@ def get_runs():
     except Exception as e:
         print("Unable to connect to SQL Database! Error:"+str(e))
         return "failure"
-    cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM RunHistory')
+    cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM '+default_log)
     data=cursor.fetchall()
     conn.close()
     return data

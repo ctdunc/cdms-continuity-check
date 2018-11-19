@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import ContinuityApp from "./App";
 
-ReactDOM.render(<App />, document.getElementById("content"));
+ReactDOM.render(<ContinuityApp />, document.getElementById("content"));
