@@ -1,26 +1,18 @@
 # cdms-continuity-check
 Berkeley CDMS laboratory's continuity check web application.
 
-## Features
-- [ ]  Table
-	- [x] SQL Storage
-	- [x] Subtables
-	- [ ] Export
-	- [ ] Search Capability
-	- [ ] Data Display Option
-- [ ]  Start Menu
-	- [ ] Select Channel Index
-	- [ ] Hook into continuity.py
-	- [ ] Status Bar
-	- [ ] Stop button
-	- [ ] Console Output
+This is still a major work in progress. Will update with completed feature list soon.
 
-## Dependencies
-This  application uses a [React](https://reactjs.org) frontend, and a [Flask](http://flask.pocoo.org) server.
+## TODO:
++ Write Install Script/Easy Startup Script
+	+ Install:
+		+ App specific venv
+		+ Config on startup/default config file
+	+ Startup:
+		+ read from user config
+		+ changeable config
 
-JavaScript dependencies are managed with [npm](https://npmjs.com). The full list can be found in [package-lock.json](./web_app/static/package-lock.json). 
-
-Any copyright infringement is not intentional. 
++ Finish Socket.io integration w/redis/celery.
 
 
 ## License

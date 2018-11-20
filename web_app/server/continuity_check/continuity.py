@@ -57,7 +57,6 @@ def perform_check(expected_table='', tests=[], channels=[],
             i = measurement_to_json(i)
             yield {'key': 'MEASUREMENT','value':i}
     disc_complete = ("Finished parallell disconnected tests in " + ("--- %s seconds ---" % (time.time() - start_disconnect)))
-    yield {'key': 'MSG', 'value': disc_complete}
     # perform connected tests
     # first, create generator over which to iterate
     connect_generator = (dmm.individual_continuity(i)  for i in tests_connected)
@@ -69,9 +68,8 @@ def perform_check(expected_table='', tests=[], channels=[],
     for result in connect_generator:
         final_result = np.append(final_result,np.array(result,dtype=final_result.dtype))
         result = measurement_to_json(result)
-        yield {'key':'MSG', 'value':result}
+        yield {'key':'MEASUREMENT', 'value':result}
     conn_complete = ("Finished individual connected tests in " + ("--- %s seconds ---" % (time.time() - start_connect)))
-    yield {'key': 'MSG', 'value': conn_complete}
 
     # finally, write data to SQLdb
     # TODO: fix the validation table
@@ -82,19 +80,11 @@ def perform_check(expected_table='', tests=[], channels=[],
 def measurement_to_json(m):
     signal_1,signal_2,mini,maxi,passing = m['signal_1'],m['signal_2'],m['min'],m['max'],m['passing']
     result = {
-            'signal_1': signal_1,
-            'signal_2': signal_2,
+            'signal_1': str(signal_1),
+            'signal_2': str(signal_2),
             'min': float(mini),
             'max': float(maxi),
             'passing': bool(passing)
             }
     return result
 
-def def_int(o):
-    try:
-        if isinstance(o, np.int64): return int(o)
-        if isinstance(str): return o
-        if isinstance(np.float64): return float(o)
-    except e:
-        print(o)
-        print(e)

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, json, request, jsonify, Response, url_for
+from flask_socketio import SocketIO
 from celery import Celery
 import numpy as np
 
@@ -17,6 +18,12 @@ celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
 
+# configure socketio
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
+
+
+
 # Celery Workers
 @celery.task(bind=True)
 def continuity_check(self):
@@ -24,12 +31,16 @@ def continuity_check(self):
         # Serialize i
         key = i.get('key')
         value= i.get('value')
-         # Update task state
+        # Update task state
         self.update_state(state='PROGRESS',
                 meta={'key': key,
                     'value': value
                      })
+        # Change to socket.emit event
 
+@socketio.on('hello')
+def handleHello():
+    print('jello')
 
 # App routes
 @app.route("/")
@@ -48,11 +59,10 @@ def getRuns():
     data = get_runs()
     return jsonify(data)
 
-
 @app.route('/continuitycheck',methods=['POST'])
 def continuitycheck():
     task=continuity_check.apply_async()
-    return jsonify({}),202,{'Location': url_for('continuitycheck',task_id=task.id)}
+    return jsonify({}),202,{'Location': url_for('taskstatus',task_id=task.id)}
 
 @app.route('/status/<task_id>')
 def taskstatus(task_id):
@@ -66,10 +76,11 @@ def taskstatus(task_id):
             'status': 'Pending...'
         }
     elif task.state != 'FAILURE':
+        print(task.info)
         response = {
             'state': task.state,
-            'key': task.key,
-            'value': task.value,
+            'key': task.info.get('key'),
+            'value': task.info.get('value'),
             'status': 'Check in progress...'
         }
     else:
@@ -81,5 +92,6 @@ def taskstatus(task_id):
             'status': str(task.info),  # this is the exception raised
         }
     return jsonify(response) 
+
 if __name__ == "__main__":
-    app.run()
+    socketio.run(app,debug=True)
