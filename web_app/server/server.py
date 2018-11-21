@@ -1,7 +1,8 @@
 from flask import Flask, render_template, json, request, jsonify, Response, url_for
 from flask_socketio import SocketIO
 from celery import Celery
-import numpy as np
+from requests import post
+import functools
 
 from sql_helper.sql_interface import *
 from continuity_check.continuity import perform_check
@@ -26,21 +27,30 @@ socketio = SocketIO(app)
 
 # Celery Workers
 @celery.task(bind=True)
-def continuity_check(self):
+def continuity_check(self, url):
+    iterator = perform_check()
+    iterlen = functools.reduce(lambda acc, e: acc+1, iterator, 0)
+    post(url, json={'key': 'TOTAL', 'value': iterlen})
+
     for i in perform_check():
         # Serialize i
         key = i.get('key')
         value= i.get('value')
-        # Update task state
-        self.update_state(state='PROGRESS',
-                meta={'key': key,
-                    'value': value
-                     })
-        # Change to socket.emit event
 
-@socketio.on('hello')
-def handleHello():
-    print('jello')
+       # Update task state
+        meta={'key': key,
+             'value': value
+              }
+        self.update_state(state='PROGRESS',
+            meta=meta)
+
+        post(url, json=meta)
+        time.sleep(0.05)
+    meta = {'key': 'COMPLETE',
+            'value': 'COMPLETE!'
+            }
+    return True
+
 
 # App routes
 @app.route("/")
@@ -59,39 +69,17 @@ def getRuns():
     data = get_runs()
     return jsonify(data)
 
+@app.route('/event/', methods=['POST'])
+def event():
+    data = request.json
+    socketio.emit('checkUpdate',data)
+    return '0'
+
 @app.route('/continuitycheck',methods=['POST'])
 def continuitycheck():
-    task=continuity_check.apply_async()
-    return jsonify({}),202,{'Location': url_for('taskstatus',task_id=task.id)}
-
-@app.route('/status/<task_id>')
-def taskstatus(task_id):
-    task = continuity_check.AsyncResult(task_id)
-    if task.state == 'PENDING':
-        # job did not start yet
-        response = {
-            'state': task.state,
-            'key': '',
-            'value': '',
-            'status': 'Pending...'
-        }
-    elif task.state != 'FAILURE':
-        print(task.info)
-        response = {
-            'state': task.state,
-            'key': task.info.get('key'),
-            'value': task.info.get('value'),
-            'status': 'Check in progress...'
-        }
-    else:
-        # something went wrong in the background job
-        response = {
-            'state': task.state,
-            'key': 1,
-            'value': 1,
-            'status': str(task.info),  # this is the exception raised
-        }
-    return jsonify(response) 
+    task=continuity_check.delay(url_for('event',_external=True))
+    socketio.emit('checkStarted', {'taskid': task.id})
+    return 'started'    
 
 if __name__ == "__main__":
     socketio.run(app,debug=True)

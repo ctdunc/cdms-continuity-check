@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "fs": "0.0.1-security",
-    "react-select": "^2.1.1",
+    "informed": "^1.10.9",
+    "react-progressbar": "^15.4.1",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "uws": "^99.0.0"

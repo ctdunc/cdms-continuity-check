@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import Progress from 'react-progressbar';
+
 import StartMenuForm from './StartMenu_Form';
 import StartMenuStatus from './StartMenu_Status';
+
 var $ = require('jquery');
 var socket = io.connect('http://' + document.domain + ':' + location.port);
-class StartMenu extends Component{
+
+export default class StartMenu extends Component{
 	constructor(props,context){
 		super(props,context);
 		this.state = {
@@ -17,86 +21,118 @@ class StartMenu extends Component{
 				device: '',
 				vib: ''
 			},
-			total: 0,
+			total: 1,
 			complete: 0,
+			percentcomplete: 0,
 			running: false,
-			messages: {},
-			fails: {},
-			passes: {}
+			messages: [],
+			fails: [],
 		};
 
 		this.startTask = this.startTask.bind(this);
-		this.updateStatus = this.updateStatus.bind(this);
-		this.emitEvent = this.emitEvent.bind(this);
-		socket.on('connection',(socket) => {
-			console.log('connection!');
-			socket.emit('hello');
-		});
-	}
-	emitEvent(e){
-		socket.emit('hello');
-		console.log('emitted');
-		e.stopPropagation();
-	}
-	startTask(e){
-		$.ajax({
-			type: 'POST',
-			url: '/continuitycheck',
-			success: ((data, stat, request)=> {
-				var status_url = request.getResponseHeader('Location');
+		this.handleUpdate = this.handleUpdate.bind(this);
+		this.completePercentage = this.completePercentage.bind(this);
 
-				setTimeout(()=>{this.updateStatus(status_url)},200);
+		socket.on('connect',(socket) => {});
+		socket.on('checkStarted', (data) => {console.log(data);});
+		socket.on('checkUpdate', (data) => {this.handleUpdate(data)});
+	}
+
+	startTask(e){
+		if(!this.state.running){
+			$.ajax({
+				type: 'POST',
+				url: '/continuitycheck',
+				success: ((data, stat, request)=> {
+					this.setState({running: true});
+				}),
+				error: (() => {
+					alert('err');
 				})
 			});
-		e.stopPropagation()
+		}
+		else{
+			alert('Check already in progress! Please wait');
+		}
+		e.stopPropagation();
 	}
 
-	updateStatus(status_url){
-		$.getJSON(status_url, ((data) => {
-			console.log(data);
-			if(data['state'] != 'PENDING' && data['state'] != 'PROGRESS'){
-				this.setState({messages: [...this.state.messages, data['status']]});
-			}
-			if(data['state'] == 'PENDING'){
-				this.setState({messages: data['state']});
-			}
-			else{
-				var value = data['value'];
-				if(data['key'] == 'MSG'){
-					this.setState({messages: [...this.state.messages, value]});
-				}
-				else if (data['key']== 'MEASUREMENT'){
-					if(value['passing']){
-						this.setState({passes: [...this.state.passes, value]});
-					}
-					else{
-						this.setState({fails: [...this.state.fails, value]});
-					}
-				}
-				this.updateStatus(status_url);
-			}
-				}));
-		}
-
+	handleUpdate(data){
+		var value = data['value'];
+		console.log(data['key']);
 		
+		if(data['key'] == 'MSG' && data['key'] != 'MEASUREMENT'){
+			this.setState({complete: this.state.complete+1})
+			this.setState({messages: [...this.state.messages, value]});
+		}
+		else if (data['key']=='TOTAL'){
+			console.log(data);
+			this.setState({total: value});
+		}
+		else if (data['key'] == 'MEASUREMENT'){
+			this.setState({complete: this.state.complete+1});
+			if(!value['passing']){
+				this.setState({fails: [...this.state.fails, value]});
+			}
+		}
+	}
+
+	completePercentage(comp){
+		var percent = 100*comp/this.state.total;
+		return(percent);
+	}
+	
 	render(){
 		return(
-			<div>
-				<button onMouseDown={this.emitEvent}> Emit Test</button>
+			<div className="startMenu">
 				<div className="left-50">
-					<StartMenuForm className="left-50"
+					<StartMenuForm className="startMenuForm"
 						startTask={this.startTask}/>
-					<div>
-						{JSON.stringify(this.state.status_url)}
-					</div>
 				</div>
 				<div className="right-50">
-					{JSON.stringify(this.state.passes)}
-					{JSON.stringify(this.state.fails)}
-					{JSON.stringify(this.state.messages)}
+					<div className="progressbar">
+						<b>Progress:</b> {this.state.complete}/{this.state.total}
+						<Progress completed={this.completePercentage(this.state.complete)} className="progr" />
+					</div>
+					<div className="messages">
+						{this.state.messages.map((m,index) => 
+							<div className='message' 
+								key={index}>
+								<b>{m}</b>
+							</div>)
+						}
+					</div>
+					<div className="failures">
+						{this.state.fails.map((f,index) => 
+							<Measurement key={index} 
+								sig1={f.signal_1} 
+								sig2={f.signal_2} 
+							/>)
+						}
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
-export default StartMenu;
+
+
+
+class Measurement extends Component {
+	constructor(props,context){
+		super(props,context);
+		this.state = {
+			'sig1': props.sig1,
+			'sig2': props.sig2,
+		}
+	}
+
+	render(){
+		return(
+			<div className='measurement'>
+				<b>Signal 1</b>: {this.state.sig1},
+				<b>Signal 2</b>: {this.state.sig2}
+			</div>
+		);
+	}
+}

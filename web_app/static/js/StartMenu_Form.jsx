@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
+import Form from 'informed';
 
 export default class StartMenu_Form extends Component{
 	constructor(props,context){
@@ -9,55 +9,19 @@ export default class StartMenu_Form extends Component{
 	render(){
 		return(
 			<div>
-			<form>
-				<div className="row">
-					<label className="col-25">
-							Expected Values
-						<select name="expected_table"
-							className="col-75">
-							<option value='slac_expected_values'>slac</option>
-							<option value='slac_2'>slac2</option>
-						</select>
+				<Form onChange={this.handleChange} id="startcheck-form">
+					<label htmlFor="startcheck-validation">
+					Expected Values:
 					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							Tests
-						<Select
-						isMulti={true}
-							options={[{value: 'test1', label: 'test1'},{value:'test2',label:'test2'}]}
-							className="col-75"
-						/>
-					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							Channels
-					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							Institution
-					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							Wiring
-					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							Device
-					</label>
-				</div>
-				<div className="row">
-					<label className="col-25">
-							VIB
-					</label>
-				</div>
-				<input type="submit" value="Submit"/>
-			</form>
-			<button onMouseDown={this.props.startTask} />
+					<Select field="validtion" 
+						id="select-validation"
+						multiple
+					>
+				//TODO: add in logic to get from SQL table		{this.selectValues}
+					</Select>
+					
+				</Form>
+				<button onMouseDown={this.props.startTask} />
 			</div>
 		);
 	}

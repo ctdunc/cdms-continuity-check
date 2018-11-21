@@ -78,12 +78,13 @@ def perform_check(expected_table='', tests=[], channels=[],
 
     
 def measurement_to_json(m):
-    signal_1,signal_2,mini,maxi,passing = m['signal_1'],m['signal_2'],m['min'],m['max'],m['passing']
+    signal_1,signal_2,mini,maxi,passing,measured = m['signal_1'],m['signal_2'],m['min'],m['max'],m['passing'],m['measured']
     result = {
             'signal_1': str(signal_1),
             'signal_2': str(signal_2),
             'min': float(mini),
             'max': float(maxi),
+            'measured': float(measured),
             'passing': bool(passing)
             }
     return result

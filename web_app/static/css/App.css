@@ -1,27 +1,65 @@
+/* Top Level Styling */
+.page{
+	width:100%;
+	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+}
 .header{
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 100vw;
-	height: 5vh;
+	width: inherit;
+	height: 5%;
 	z-index: 1;
 }
 .content{
 	position: absolute;
 	top: 5vh;
 	left: 0;
-	width: 100vw;
-	height: 95vw;
+	width: inherit; 
+	height: 95%;
+}
+
+/* Start Check Styling */
+.startMenu{
+	height: inherit;
+	width: inherit;
 }
 .left-50{
 	position: absolute;
 	left: 0;
-	width: 50vw;
+	width: 50%;
 }
 .right-50{
 	position: absolute;
-	left: 50vw;
-	width: 50vw;
+	left: 50%;
+	width: 50%;
+	height: inherit;
+}
+.messages{
+	position:absolute;
+	width: 100%;
+	height: 5%;
+	top: 5%;
+	background: blue;
+}
+
+
+.failures{
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	width: 50%;
+	height: 90%;
+	overflow-y:auto;
+	background:red;
+}
+
+/* Start Check Form Styling */
+.startMenuForm{
+	width: inherit;
+	height: inherit;
 }
 .col-25{
 	float:left;

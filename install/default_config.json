@@ -1,0 +1,20 @@
+"storage": {
+	"db": "continuity-check",
+	"default-user": {
+		"username": "cdms",
+		"password": "cdms"
+	},
+	"tables": {
+		"run_history": "continuity-history",
+		"expected_values": "continuity-expected-values",
+		"channel_naming": "continuity-channel-naming"
+	}
+},
+"server":{
+	"redis-port": 6397,
+	"host": "127.0.0.1:5000/"
+},
+"dmm":{
+	"disconnected_lower": 40.0e6,
+	"ip_address": null
+}
