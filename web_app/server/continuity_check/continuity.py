@@ -22,7 +22,21 @@ def perform_check(expected_table='', tests=[], channels=[],
     expected_values = get_validation_request(expected_table,tests)
     expected_datatype = np.dtype([('signal_1','U20'),('signal_2','U20'),('expected_continuity','b'),('min',float),('max',float)])
     expected_values = np.array(expected_values,expected_datatype)
+<<<<<<< HEAD
 
+=======
+    # converts signal names to DMM matrix so that we can just manipulate that from now on. The final write will re-translate from this dict.
+    # (we're also lying a little bit here, since it's an array, not a dictionary, but I like the ufunc features of numpy)
+    for k in vib_signal_dict:
+        expected_values['signal_1'] = np.where(expected_values['signal_1']==k['Signal_name'], # condition
+                k['DB_78_pin'], # returns matrix location in correct index if condition
+                expected_values['signal_1'] # if not condition, returns initial value
+                )
+        expected_values['signal_2'] = np.where(expected_values['signal_2']==k['Signal_name'], # condition
+                k['DB_78_pin'], # returns matrix location in correct index if condition
+                expected_values['signal_2']) # if not condition, returns initial value
+    print("completed this component of the thing")
+>>>>>>> python-devel
     # these arrays are created to store the tests we want to perform using our parallel algorithm, 
     # and our simple measurement function.
     # this should improve efficiency because it will allow us to split the parallel (connected) 
