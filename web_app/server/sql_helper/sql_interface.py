@@ -1,18 +1,19 @@
+from MySQLdb import connect
 from sql_helper.sql_formatter import *
 from sql_helper.gen_testing_data import *
-from mysql.connector import (connection)
+
 
 # TODO: Make this operate as a class, rather than a series of functions to cut down on number of database connections
 default_log = "continuity_history"
-local_database = "CDMSTest"
+local_database = "database"
 local_user = 'cdms'
 local_pass = 'cdms'
 local_host = 'localhost'
 def get_vib_signal_dict():
     try:
-        conn = connection.MySQLConnection(
+        conn =connect(
             user=local_user,
-            password = local_pass,
+            password=local_pass,
             host=local_host,
             database = local_database)
         cursor=conn.cursor()
