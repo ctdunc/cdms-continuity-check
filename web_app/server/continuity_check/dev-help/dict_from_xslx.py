@@ -1,14 +1,14 @@
 import pandas as pd
 import os
-from mysql.connector import (connection)
+from MySQLdb import connect
 dir_path = os.getcwd()
 host = 'localhost'
 user = 'cdms'
 pw = 'cdms'
-db = 'CDMSTest'
+db = 'continuity_check'
 
 data = pd.read_excel(dir_path+'/Continuity_PCB.xlsx')
-conn = connection.MySQLConnection(
+conn = connect(
     user=user,
     password=pw,
     host=host,

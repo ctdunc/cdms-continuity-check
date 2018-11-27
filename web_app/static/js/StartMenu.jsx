@@ -110,7 +110,8 @@ export default class StartMenu extends Component{
 							/>)
 						}
 					</div>
-				</div>
+				<button onClick={this.startTask}> TEST </button>			</div>
+
 			</div>
 		);
 	}

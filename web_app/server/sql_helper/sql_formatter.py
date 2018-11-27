@@ -133,6 +133,7 @@ def format_check_row(table, sig_1, sig_2, minimum, maximum, measured,unit,passed
             unitt=unit,
             passing=passed)
 def format_get_check(tablename):
+    
     get_format="""
         SELECT
             Signal_1,

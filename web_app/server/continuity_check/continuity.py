@@ -13,7 +13,7 @@ def perform_check(expected_table='', tests=[], channels=[],
     # sql_interface.py document.
     # reads in dict of check, converts to numpy array
 
-    vib_signal_dtype = np.dtype([('Matrix_location','U5'),('DB_78_pin','U5'),('VIB_pin','U5'),('Signal_name','U20')])
+    vib_signal_dtype = np.dtype([('Matrix_location','U10'),('DB_78_pin','U5'),('VIB_pin','U5'),('Signal_name','U20')])
     vib_signal_dict = np.array(get_vib_signal_dict(),vib_signal_dtype) # read in values from SQL
     vib_signal_dict = vib_signal_dict[np.where(vib_signal_dict['Signal_name']!='x')] # sort out elements without mapping
     

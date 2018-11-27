@@ -1,13 +1,14 @@
 from MySQLdb import connect
+import os
 from sql_helper.sql_formatter import *
 from sql_helper.gen_testing_data import *
 
 
 # TODO: Make this operate as a class, rather than a series of functions to cut down on number of database connections
 default_log = "continuity_history"
-local_database = "database"
-local_user = 'cdms'
-local_pass = 'cdms'
+local_database = "continuity_check"
+local_user = "cdms"
+local_pass = "cdms"
 local_host = 'localhost'
 def get_vib_signal_dict():
     try:
@@ -20,6 +21,15 @@ def get_vib_signal_dict():
     except Exception  as e:
         print("Failed to connect to database! Error: "+str(e))
         return "Failure"
+    createcheck = """
+        CREATE TABLE IF NOT EXISTS
+            channel_naming (Matrix_location VARCHAR(10),
+                DB_78_pin VARCHAR(5),
+                VIB_pin VARCHAR(5),
+                Signal_name VARCHAR(20)
+                );
+    """
+    cursor.execute(createcheck);
     command = """
         SELECT
             Matrix_location, DB_78_pin, VIB_pin, Signal_name 
@@ -29,11 +39,11 @@ def get_vib_signal_dict():
     cursor.execute(command)
     data=cursor.fetchall()
     conn.close()
-    return data
+    return [i for i in data] 
     
 def get_validation_request(expected_table='',test_rows=[{}]):
     try:
-        conn = connection.MySQLConnection(
+        conn = connect(
             user=local_user,
             password = local_pass,
             host=local_host,
@@ -50,12 +60,12 @@ def get_validation_request(expected_table='',test_rows=[{}]):
     command = format_validation_request(expected_table,test_rows)
     cursor.execute(command)
     result = cursor.fetchall()
-    return result
+    return [i for i in result]
 
 def get_check(tablename):
     # Try to connect to server, log result in server if failure.
     try:
-        conn = connection.MySQLConnection(
+        conn = connect(
             user = local_user,
             password=local_pass,
             host=local_host,
@@ -74,7 +84,7 @@ def get_check(tablename):
 
 def get_runs():
     try:
-        conn = connection.MySQLConnection(
+        conn = connect(
                 user = local_user,
                 password = local_pass,
                 host = local_host,
@@ -83,6 +93,7 @@ def get_runs():
     except Exception as e:
         print("Unable to connect to SQL Database! Error:"+str(e))
         return "failure"
+    cursor.execute('CREATE TABLE IF NOT EXISTS ' + default_log + ' (Date DATETIME, Institution VARCHAR(20), VIB VARCHAR(10), Wiring VARCHAR(10), Device VARCHAR(10), Temperature FLOAT(5), Validator VARCHAR(10), Check_name VARCHAR(10));')
     cursor.execute('SELECT Date, Institution, VIB, Wiring, Device, Temperature, Validator, Check_name FROM '+default_log)
     data=cursor.fetchall()
     conn.close()
@@ -103,7 +114,7 @@ def write_check(data,
 
     # Try to connect to server, log result in server if failure.
     try:
-        conn = connection.MySQLConnection(
+        conn = connect(
             user = local_user,
             password=local_pass,
             host=local_host,
